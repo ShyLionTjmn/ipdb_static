@@ -204,7 +204,7 @@ func main() {
     e("body").R(
       e("div").R(t("Generated: " + now)),
       e("div").R(
-        e("label", "class", "button", "onclick", "expandAll();").R(t("Разверуть все")),
+        e("label", "class", "button", "onclick", "expandAll();").R(t("Развернуть все")),
         e("label", "class", "button", "onclick", "collapseAll();").R(t("Свернуть все")),
       ),
       e("H1").R(t(`Сети IPv4`)),
