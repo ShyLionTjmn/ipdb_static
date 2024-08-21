@@ -1,0 +1,10 @@
+filippo.io/edwards25519 v1.1.0 h1:FNf4tywRC1HmFuKW5xopWpigGjJKiJSV0Cqo0cJWDaA=
+filippo.io/edwards25519 v1.1.0/go.mod h1:BxyFTGdWcka3PhytdK4V28tE5sGfRvvvRV7EaN4VDT4=
+github.com/ShyLionTjmn/dbtools v0.0.0-20240820124026-fa3fc9059362 h1:IcKU8QMpMaSCPtUIyLekpKUO0dn9K16Nz+Occg4dw14=
+github.com/ShyLionTjmn/dbtools v0.0.0-20240820124026-fa3fc9059362/go.mod h1:1y+/tg2IAnNWuDlw0sigLYi8sB6qcviWzp1dRqz1sbk=
+github.com/ShyLionTjmn/m v0.0.0-20230321135634-504b1e7786d1 h1:ARHfkYKxEEUGV7tMyMgrRy8us1hnCIVGydviPmc5Img=
+github.com/ShyLionTjmn/m v0.0.0-20230321135634-504b1e7786d1/go.mod h1:5rMDTw1/cekG95cWbnquQXnSVbC2E6JKU9fzkr8iyts=
+github.com/go-sql-driver/mysql v1.8.1 h1:LedoTUt/eveggdHS9qUFC1EFSa8bU2+1pZjSRpvNJ1Y=
+github.com/go-sql-driver/mysql v1.8.1/go.mod h1:wEBSXgmK//2ZFJyE+qWnIsVGmvmEKlqwuVSjsCm7DZg=
+github.com/rohanthewiz/element v0.4.0 h1:zY6cVEtJZnBPjzBXAyw8haGHtILM+LwXAqED0NAJ2lM=
+github.com/rohanthewiz/element v0.4.0/go.mod h1:yxmrFVnO9eQQ7GbjRfJgJG9u8yHUjTTxy/6ji3PNhXY=

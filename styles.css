@@ -1,0 +1,48 @@
+.cont {
+  margin-bottom: 0.5em;
+}
+.cont_head {
+  border: 1px black solid;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: large;
+  font-weight: bold;
+}
+.netaddr {
+  margin-right: 2em;
+}
+.netname {
+  margin-right: 1em;
+}
+.netvlan {
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+  border: 1px black solid;
+  background-color: #EEEEEE;
+}
+.cont_data {
+  padding-left: 1em;
+}
+TH:nth-child(even),TD:nth-child(even) {
+  background-color: #F0F0FF;
+}
+TH:nth-child(odd),TD:nth-child(odd) {
+  background-color: #F0FFF0;
+}
+.tag {
+  border: 1px solid black;
+  margin-left: 0.5em;
+}
+.cont>div {
+  margin-top: 0.3em;
+}
+.netinfo>div {
+  margin-top: 0.3em;
+}
+.button {
+  margin-right: 1em;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+}
