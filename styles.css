@@ -46,3 +46,12 @@ TH:nth-child(odd),TD:nth-child(odd) {
   padding-left: 0.2em;
   padding-right: 0.2em;
 }
+.mac {
+  font-family: monospace;
+}
+.hide {
+  display: inline-block;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+}

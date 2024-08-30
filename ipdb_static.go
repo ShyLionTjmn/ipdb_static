@@ -45,9 +45,11 @@ func logError(source string, message string) {
 }
 
 var g_num_reg *regexp.Regexp
+var g_mac_reg *regexp.Regexp
 
 func init() {
   g_num_reg = regexp.MustCompile(`^\d+$`)
+  g_mac_reg = regexp.MustCompile(`^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$`)
 }
 
 func get_tag_path(tags M, tag_id string, count int, prev_path []string) ([]string) {
@@ -147,6 +149,7 @@ func main() {
   var vds []M
   var vlans M
   var ics M
+  var v4arps M
 
   us, err = Return_query_M(db, "SELECT * FROM us", "u_id")
   if err != nil { panic(err) }
@@ -184,6 +187,9 @@ func main() {
   ics, err = Return_query_M(db, "SELECT * FROM ics", "ic_id")
   if err != nil { panic(err) }
   _ = ics
+
+  v4arps, err = Return_query_M(db, "SELECT * FROM v4arps", "v4arp_ip")
+  if err != nil { panic(err) }
 
   b := element.NewBuilder()
 	e := b.Ele
@@ -300,6 +306,7 @@ func main() {
                   e("thead").R(
                     e("tr").R(
                       e("th"),
+                      e("th").R(t("ARP")),
                       func () (_ any) {
                         for _, col_row := range netcols {
                           ic_id := col_row.Vs("ic_id")
@@ -314,8 +321,30 @@ func main() {
                       for _, iprow := range ips {
                         ip_id := iprow.Vs("v4ip_id")
                         ip_addr := v4long2ip(uint32(iprow.Vu("v4ip_addr")))
+
+                        mac := ""
+                        search_mac := ""
+                        seen := ""
+
+                        if _, ex := v4arps[ iprow.Vs("v4ip_addr") ]; ex {
+                          if m := g_mac_reg.FindStringSubmatch(v4arps.Vs( iprow.Vs("v4ip_addr"), "v4arp_mac")); m != nil {
+                            mac = strings.ToUpper(strings.Join(m[1:], ":"))
+                            search_mac = mac + " " +
+                              strings.Join(m[1:], "-") + " " +
+                              strings.Join(m[1:], "") + " " +
+                              m[1] + m[2] + "-" + m[3] + m[4] + "-" + m[5] + m[6] + " " +
+                              m[1] + m[2] + "." + m[3] + m[4] + "." + m[5] + m[6]
+
+                            seen = "Last seen: " + time.Unix( v4arps.Vi( iprow.Vs("v4ip_addr"), "ts"), 0).Format("2006-01-02 15:03:04")
+                          }
+                        }
+
                         e("tr").R(
                           e("td").R(t(ip_addr)),
+                          e("td").R(
+                            e("span", "title", seen, "class", "mac").R(t(mac)),
+                            e("span", "class", "hide").R(t(search_mac)),
+                          ),
                           func () (_ any) {
                             for _, col_row := range netcols {
                               ic_id := col_row.Vs("ic_id")
