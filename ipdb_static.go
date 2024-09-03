@@ -4,7 +4,8 @@ import (
   "fmt"
   "time"
   "os"
-//  "log"
+  "log"
+  "encoding/json"
   "flag"
   "strings"
   "slices"
@@ -23,6 +24,14 @@ import (
   "github.com/rohanthewiz/element"
 )
 
+const DEFAULT_CONFIG_FILE = "/etc/ipdb/ipdb.config"
+const DEFAULT_DSN = "ipdb_ajax:@unix(/var/lib/mysql/mysql.sock)/ipdb"
+
+type Config struct {
+  Db_dsn string `json:"DSN"` //opt_b
+}
+
+
 const (
   F_ALLOW_LEAFS uint64 = 1 << iota // allow to create leafs off non-root tag
   F_DENY_SELECT // deny selection as value
@@ -39,6 +48,7 @@ var js string
 
 var opt_d bool= false
 var opt_b string
+var opt_C string
 
 func logError(source string, message string) {
   fmt.Fprintln(os.Stderr, source, message)
@@ -96,17 +106,48 @@ func full_tag(tags M, tag_id string, b *element.Builder) {
   )
 }
 
+func isFlagPassed(name string) bool {
+  found := false
+  flag.Visit(func(f *flag.Flag) {
+    if f.Name == name {
+      found = true
+    }
+  })
+  return found
+}
+
+
 func main() {
 
   var f_opt_d *bool = flag.Bool("d", opt_d, "Debug output")
-  var f_opt_b *string = flag.String("b", DSN, "Database DSN")
+  var f_opt_b *string = flag.String("b", DEFAULT_DSN, "Database DSN")
+  var f_opt_C *string = flag.String("C", DEFAULT_CONFIG_FILE, "Config file location")
+
 
   flag.Parse()
 
+  opt_C = *f_opt_C
+
+  if fstat, ferr := os.Stat(opt_C); ferr == nil && fstat.Mode().IsRegular() {
+    var config Config
+
+    var err error
+    var conf_json []byte
+    if conf_json, err = os.ReadFile(opt_C); err != nil { log.Fatal(err.Error()) }
+
+    if err = json.Unmarshal(conf_json, &config); err != nil { log.Fatal(err.Error()) }
+
+    if config.Db_dsn != "" {
+      opt_b = config.Db_dsn
+    } else {
+      opt_b = DEFAULT_DSN
+    }
+  }
 
 
   opt_d = *f_opt_d
-  opt_b = *f_opt_b
+
+  if isFlagPassed("b") { opt_b = *f_opt_b }
 
   defer func() {
     if r := recover(); r != nil {
